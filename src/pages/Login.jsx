@@ -33,6 +33,10 @@ const Login = () => {
   }
   const handleSubmit = (event) => {
     event.preventDefault()
+    if (!email || !password) {
+      ToastAlert('Missing input field', 'warning')
+      return
+    }
 
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {

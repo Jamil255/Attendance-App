@@ -16,7 +16,7 @@ const ToastAlert = (message, type) => {
                 transition: Bounce,
             });
         case "error":
-            return toast.success(message, {
+            return toast.error(message, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,

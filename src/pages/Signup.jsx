@@ -26,7 +26,6 @@ const SignUp = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setPasswordShow] = useState(false)
-  const [isSignupSuccessful, setIsSignupSuccessful] = useState(false)
 
   const handleClick = () => {
     navigate('/')
@@ -34,6 +33,7 @@ const SignUp = () => {
   const handleSubmit = (event) => {
     event.preventDefault()
     if (!email || !password) {
+      ToastAlert('Missing input field', 'warning')
       return
     }
 
@@ -42,7 +42,6 @@ const SignUp = () => {
         const user = userCredential.user
         console.log(user)
 
-        setIsSignupSuccessful(true) // Set state to successful
         ToastAlert('user successfully signup', 'success')
         setTimeout(() => navigate('/'), 2000) // 1 second delay (adjust as needed)
       })
