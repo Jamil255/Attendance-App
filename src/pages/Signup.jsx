@@ -39,10 +39,10 @@ const SignUp = () => {
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        const user = userCredential.user
+        const user = userCredential.user.uid
         console.log(user)
         ToastAlert('user successfully signup', 'success')
-        setTimeout(() => navigate('/'), 2000)
+        setTimeout(() => navigate('/'),3000)
         // 1 second delay (adjust as needed)
       })
       .catch((error) => {

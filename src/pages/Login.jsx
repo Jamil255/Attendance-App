@@ -26,8 +26,6 @@ const Login = () => {
   const [showPassword, setPasswordShow] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [isSigninSuccessful, setIsSigninSuccessful] = useState(false)
-
   const handleClick = () => {
     navigate('/signup')
   }
@@ -41,10 +39,8 @@ const Login = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user
-        setIsSigninSuccessful(true) // Set state to successful
         ToastAlert('user successfully login ', 'success')
 
-        // Navigate after a brief delay to ensure toast visibility
         setTimeout(() => navigate('/signup'), 2000) // 1 second delay (adjust as needed)
       })
       .catch((error) => {
