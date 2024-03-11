@@ -41,7 +41,7 @@ const Login = () => {
         const user = userCredential.user
         ToastAlert('user successfully login ', 'success')
 
-        setTimeout(() => navigate('/signup'), 2000) // 1 second delay (adjust as needed)
+        // setTimeout(() => navigate('/signup'), 2000) // 1 second delay (adjust as needed)
       })
       .catch((error) => {
         const errorCode = error.code

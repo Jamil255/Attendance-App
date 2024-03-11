@@ -1,7 +1,7 @@
-import Login from './pages/Login'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import SignUp from './pages/Signup'
 import { Bounce, ToastContainer } from 'react-toastify'
+import Login from './pages/Login'
+import SignUp from './pages/Signup'
 
 const App = () => {
   return (
