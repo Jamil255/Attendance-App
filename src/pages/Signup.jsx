@@ -41,9 +41,9 @@ const SignUp = () => {
       .then((userCredential) => {
         const user = userCredential.user
         console.log(user)
-
         ToastAlert('user successfully signup', 'success')
-        setTimeout(() => navigate('/'), 2000) // 1 second delay (adjust as needed)
+        setTimeout(() => navigate('/'), 2000)
+        // 1 second delay (adjust as needed)
       })
       .catch((error) => {
         const errorCode = error.code

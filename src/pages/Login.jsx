@@ -42,7 +42,7 @@ const Login = () => {
       .then((userCredential) => {
         const user = userCredential.user
         setIsSigninSuccessful(true) // Set state to successful
-        ToastAlert('user successfully signup', 'success')
+        ToastAlert('user successfully login ', 'success')
 
         // Navigate after a brief delay to ensure toast visibility
         setTimeout(() => navigate('/signup'), 2000) // 1 second delay (adjust as needed)
