@@ -17,9 +17,9 @@ import { signInWithEmailAndPassword } from 'firebase/auth'
 import { InputAdornment } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import 'react-toastify/dist/ReactToastify.css'
-import { auth } from '../firebase'
-import ToastAlert from '../utills/toast'
 import { ToastContainer } from 'react-toastify'
+import { auth } from '../../firebase'
+import ToastAlert from '../../utills/toast'
 const defaultTheme = createTheme()
 const Login = () => {
   const navigate = useNavigate()

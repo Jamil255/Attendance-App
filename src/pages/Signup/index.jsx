@@ -16,10 +16,10 @@ import { useNavigate } from 'react-router-dom'
 import { InputAdornment } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '../firebase'
 import 'react-toastify/dist/ReactToastify.css'
-import ToastAlert from '../utills/toast'
 import { Bounce, toast, ToastContainer } from 'react-toastify'
+import { auth } from '../../firebase'
+import ToastAlert from '../../utills/toast'
 const defaultTheme = createTheme()
 const SignUp = () => {
   const navigate = useNavigate()
@@ -42,7 +42,7 @@ const SignUp = () => {
         const user = userCredential.user.uid
         console.log(user)
         ToastAlert('user successfully signup', 'success')
-        setTimeout(() => navigate('/'),3000)
+        setTimeout(() => navigate('/'), 3000)
         // 1 second delay (adjust as needed)
       })
       .catch((error) => {
