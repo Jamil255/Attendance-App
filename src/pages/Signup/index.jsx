@@ -41,9 +41,9 @@ const SignUp = () => {
       .then((userCredential) => {
         const user = userCredential.user.uid
         console.log(user)
+        localStorage.setItem('uid', user)
         ToastAlert('user successfully signup', 'success')
-        setTimeout(() => navigate('/'), 3000)
-        // 1 second delay (adjust as needed)
+        setTimeout(() => navigate('../Dashboard'), 2000)
       })
       .catch((error) => {
         const errorCode = error.code
