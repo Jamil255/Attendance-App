@@ -39,7 +39,7 @@ const Login = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user
-        ToastAlert('user successfully login ', 'success')
+          ToastAlert('user successfully login ', 'success')
 
         // setTimeout(() => navigate('/signup'), 2000) // 1 second delay (adjust as needed)
       })

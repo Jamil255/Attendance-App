@@ -1,13 +1,13 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 const firebaseConfig = {
-    apiKey: import.meta.env.VITE_REACT_API_URL,
-    authDomain: "reactapp-df53f.firebaseapp.com",
-    projectId: "reactapp-df53f",
-    storageBucket: "reactapp-df53f.appspot.com",
-    messagingSenderId:import.meta.env.VITE_REACT_SENDER_ID_URL,
-    appId:import.meta.env.VITE_REACT_API_ID_URL
-}
+  apiKey: "AIzaSyAjnrHNU_ukZmcxTU0JcENVFNplfzbkeUY",
+  authDomain: "attendance-app-281d9.firebaseapp.com",
+  projectId: "attendance-app-281d9",
+  storageBucket: "attendance-app-281d9.appspot.com",
+  messagingSenderId: "972273260512",
+  appId: "1:972273260512:web:9415b90b3b87aebe467d85"
+};
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 export {
