@@ -18,32 +18,41 @@ import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import 'react-toastify/dist/ReactToastify.css'
 import { Bounce, toast, ToastContainer } from 'react-toastify'
-import { auth } from '../../firebase'
+import { auth, db } from '../../firebase'
 import ToastAlert from '../../utills/toast'
+import { doc, setDoc } from 'firebase/firestore'
 const defaultTheme = createTheme()
 const SignUp = () => {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setPasswordShow] = useState(false)
-
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const handleClick = () => {
     navigate('/')
   }
   const handleSubmit = (event) => {
     event.preventDefault()
-    if (!email || !password) {
+    if (!email || !password || !firstName || !lastName) {
       ToastAlert('Missing input field', 'warning')
       return
     }
 
     createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user.uid
-        console.log(user)
-        localStorage.setItem('uid', user)
+      .then(async (userCredential) => {
+        const uid = userCredential.user.uid
+        console.log(uid)
+        const obj = {
+          firstName: firstName,
+          lastName: lastName,
+          type: 'admin',
+        }
+        const createUser = await setDoc(doc(db, 'user', uid), obj)
+        console.log(createUser)
+
         ToastAlert('user successfully signup', 'success')
-        setTimeout(() => navigate('../Dashboard'), 2000)
+        //     setTimeout(() => navigate('../Dashboard'), 1000)
       })
       .catch((error) => {
         const errorCode = error.code
@@ -87,7 +96,7 @@ const SignUp = () => {
                   fullWidth
                   id="firstName"
                   label="First Name"
-                  autoFocus
+                  onChange={(e) => setFirstName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -98,6 +107,7 @@ const SignUp = () => {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                  onChange={(e) => setLastName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -170,4 +180,5 @@ const SignUp = () => {
     </ThemeProvider>
   )
 }
+
 export default SignUp

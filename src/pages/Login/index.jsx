@@ -18,8 +18,9 @@ import { InputAdornment } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify'
-import { auth } from '../../firebase'
+import { auth, db } from '../../firebase'
 import ToastAlert from '../../utills/toast'
+import { doc, getDoc } from 'firebase/firestore'
 const defaultTheme = createTheme()
 const Login = () => {
   const navigate = useNavigate()
@@ -37,9 +38,14 @@ const Login = () => {
     }
 
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user
-          ToastAlert('user successfully login ', 'success')
+      .then(async (userCredential) => {
+        const uid = userCredential.user.uid
+        console.log(uid)
+        const userData = await getDoc(doc(db, 'user', uid))
+        console.log(userData.data(), 'userdata')
+        localStorage.setItem('uid', uid)
+          localStorage.setItem("user",JSON.stringify(userData.data()))
+              ToastAlert('user successfully login ', 'success')
 
         // setTimeout(() => navigate('/signup'), 2000) // 1 second delay (adjust as needed)
       })

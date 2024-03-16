@@ -5,13 +5,15 @@ import SignUp from './pages/Signup'
 import Dashboard from './pages/Dashboard'
 import ProtectedRoute from './Routes/ProtectedRoute'
 import AuthRoute from './Routes/AuthRoute'
+import FoundNot from './pages/FoundNot'
 
 const App = () => {
   return (
     <>
       <Routes>
         <Route element={<ProtectedRoute />}>
-          <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path='*' element={ < FoundNot/>} />
           <Route />
         </Route>
         <Route element={<AuthRoute />}>
