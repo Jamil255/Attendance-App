@@ -3,23 +3,23 @@ import { Bounce, ToastContainer } from 'react-toastify'
 import Login from './pages/Login'
 import SignUp from './pages/Signup'
 import Dashboard from './pages/Dashboard'
-import ProtectedRoute from './Routes/ProtectedRoute'
 import AuthRoute from './Routes/AuthRoute'
-import FoundNot from './pages/FoundNot'
-
+import AdminProtectedRoute, { StdProtectedRoute } from './Routes/ProtectedRoute'
+import Portal from './pages/Portal'
 const App = () => {
   return (
     <>
       <Routes>
-        <Route element={<ProtectedRoute />}>
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path='*' element={ < FoundNot/>} />
-          <Route />
-        </Route>
         <Route element={<AuthRoute />}>
           <Route index element={<Login />} />
-          <Route path='/signup' element={<SignUp />} />
-          <Route />
+        </Route>
+
+        <Route element={<AdminProtectedRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
+
+        <Route element={<StdProtectedRoute />}>
+          <Route path="/portal" element={<Portal />} />
         </Route>
       </Routes>
 
