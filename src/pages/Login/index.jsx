@@ -44,10 +44,10 @@ const Login = () => {
         const userData = await getDoc(doc(db, 'user', uid))
         console.log(userData.data(), 'userdata')
         localStorage.setItem('uid', uid)
-          localStorage.setItem("user",JSON.stringify(userData.data()))
-              ToastAlert('user successfully login ', 'success')
+        localStorage.setItem('user', JSON.stringify(userData.data()))
 
-        // setTimeout(() => navigate('/signup'), 2000) // 1 second delay (adjust as needed)
+        ToastAlert('user successfully login ', 'success')
+        userData?.type == 'admin' ? navigate('/dasboard') : navigate('/portal')
       })
       .catch((error) => {
         const errorCode = error.code
@@ -125,17 +125,6 @@ const Login = () => {
               Sign In
             </Button>
             <ToastContainer />
-            <Grid container justifyContent={'center'}>
-              <Grid item>
-                <Link
-                  variant="body2"
-                  onClick={handleClick}
-                  sx={{ cursor: 'pointer' }}
-                >
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
       </Container>
