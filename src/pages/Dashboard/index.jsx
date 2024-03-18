@@ -1,8 +1,22 @@
 import React from 'react'
 import AdminLayout from '../../components/AdminLayout'
-import { Button, Divider, Grid } from '@mui/material'
+import { Divider, Grid } from '@mui/material'
 import InputField from '../../components/inputFeild'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import Button from '@mui/material/Button'
+import styled from '@emotion/styled'
+import MuiTable from '../../components/Table'
+const VisuallyHiddenInputt = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+})
 const Dashboard = () => {
   return (
     <>
@@ -21,6 +35,24 @@ const Dashboard = () => {
           </Grid>
           <Grid item sm={6}>
             <InputField label="Password" type="password" />
+          </Grid>
+          <Grid item sm={12}>
+            <Button
+              component="label"
+              role={undefined}
+              variant="contained"
+              tabIndex={-1}
+              startIcon={<CloudUploadIcon />}
+            >
+              Upload file
+              <VisuallyHiddenInputt type="file" />
+            </Button>
+          </Grid>
+          <Grid item sm={12}>
+            {/* <InputField label="Password" /> */}
+            <Button sx={{ width: '100%' }} variant="contained">
+              ADD STUDENT
+            </Button>
           </Grid>
         </Grid>
       </AdminLayout>

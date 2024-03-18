@@ -6,10 +6,15 @@ import Dashboard from './pages/Dashboard'
 import AuthRoute from './Routes/AuthRoute'
 import AdminProtectedRoute, { StdProtectedRoute } from './Routes/ProtectedRoute'
 import Portal from './pages/Portal'
+import FoundNot from './pages/FoundNot'
 const App = () => {
   return (
     <>
       <Routes>
+        <Route>
+          <Route path="*" element={<FoundNot />} />
+        </Route>
+
         <Route element={<AuthRoute />}>
           <Route index element={<Login />} />
         </Route>
