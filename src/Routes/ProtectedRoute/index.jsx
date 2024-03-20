@@ -1,10 +1,13 @@
 import React from 'react'
 import { Navigate, Outlet, json } from 'react-router-dom'
+import AdminLayout from '../../components/AdminLayout'
 
 const AdminProtectedRoute = () => {
   return localStorage.getItem('uid') ? (
     JSON.parse(localStorage.getItem('user')).type == 'admin' ? (
-      <Outlet />
+      <AdminLayout>
+        <Outlet />
+      </AdminLayout>
     ) : (
       <Navigate to={'/portal'} />
     )

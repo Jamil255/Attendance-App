@@ -1,7 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { Bounce, ToastContainer } from 'react-toastify'
 import Login from './pages/Login'
-import SignUp from './pages/Signup'
 import Dashboard from './pages/Dashboard'
 import AuthRoute from './Routes/AuthRoute'
 import AdminProtectedRoute, { StdProtectedRoute } from './Routes/ProtectedRoute'

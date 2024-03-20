@@ -1,6 +1,12 @@
 import React, { useState } from 'react'
 import AdminLayout from '../../components/AdminLayout'
-import { Divider, Grid, InputAdornment, TextField } from '@mui/material'
+import {
+  Divider,
+  Grid,
+  InputAdornment,
+  TextField,
+  Typography,
+} from '@mui/material'
 import InputField from '../../components/inputFeild'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import Button from '@mui/material/Button'
@@ -29,6 +35,7 @@ const Dashboard = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [stdImage, setStdImage] = useState('')
+
   const handlerStd = async () => {
     if (!fullName || !email || !password || !cousre || !stdImage) {
       ToastAlert('Required Field', 'warning')
@@ -49,88 +56,98 @@ const Dashboard = () => {
         cousre,
         imageURL,
         type: 'std',
+        isActive: true,
       }
       await setDoc(doc(db, 'user', userId), obj)
       ToastAlert('student create', 'success')
     } catch (error) {
       ToastAlert(error.message || error.code, 'error')
     }
+    setCousre('')
+    setEmail('')
+    setFullName('')
+    setPassword('')
+    setStdImage(false)
   }
   return (
     <>
-      <AdminLayout>
-        <h2 style={{ textAlign: 'center' }}>Add student</h2>
-        <Divider />
-        <Grid container mt={2} columnSpacing={5} rowSpacing={5}>
-          <Grid item sm={6}>
-            <InputField
-              label="Full Name"
-              onChange={(e) => setFullName(e.target.value)}
-            />
-          </Grid>
-          <Grid item sm={6}>
-            <InputField
-              label="Coruse Name"
-              onChange={(e) => setCousre(e.target.value)}
-            />
-          </Grid>
-          <Grid item sm={6} marginTop={'14px'}>
-            <InputField
-              label="Email"
-              type="email"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </Grid>
-          <Grid item sm={6}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              type={showPassword ? 'text' : 'password'}
-              label="Password"
-              id="password"
-              autoComplete="current-password"
-              onChange={(e) => setPassword(e.target.value)}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment
-                    sx={{ cursor: 'pointer' }}
-                    position="end"
-                    onClick={() => setPasswordShow(!showPassword)}
-                  >
-                    {!showPassword ? <VisibilityOff /> : <Visibility />}
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Grid>
-          <Grid item sm={12}>
-            <Button
-              component="label"
-              role={undefined}
-              variant="contained"
-              tabIndex={-1}
-              startIcon={<CloudUploadIcon />}
-            >
-              Upload file
-              <VisuallyHiddenInputt
-                type="file"
-                onChange={(e) => setStdImage(e.target.files[0])}
-              />
-            </Button>
-          </Grid>
-          <Grid item sm={12} marginTop={'20px'}>
-            {/* <InputField label="Password" /> */}
-            <Button
-              sx={{ width: '100%' }}
-              variant="contained"
-              onClick={handlerStd}
-            >
-              ADD STUDENT
-            </Button>
-          </Grid>
+      <h2 style={{ textAlign: 'center' }}>Add student</h2>
+      <Divider />
+      <Grid container mt={2} columnSpacing={5} rowSpacing={5}>
+        <Grid item sm={6}>
+          <InputField
+            label="Full Name"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+          />
         </Grid>
-      </AdminLayout>
+        <Grid item sm={6}>
+          <InputField
+            value={cousre}
+            label="Coruse Name"
+            onChange={(e) => setCousre(e.target.value)}
+          />
+        </Grid>
+        <Grid item sm={6} marginTop={'14px'}>
+          <InputField
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </Grid>
+        <Grid item sm={6}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            type={showPassword ? 'text' : 'password'}
+            label="Password"
+            id="password"
+            value={password}
+            autoComplete="current-password"
+            onChange={(e) => setPassword(e.target.value)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment
+                  sx={{ cursor: 'pointer' }}
+                  position="end"
+                  onClick={() => setPasswordShow(!showPassword)}
+                >
+                  {!showPassword ? <VisibilityOff /> : <Visibility />}
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Grid>
+        <Grid item sm={12} display={'flex'}>
+          <Button
+            component="label"
+            role={undefined}
+            variant="contained"
+            tabIndex={-1}
+            startIcon={<CloudUploadIcon />}
+          >
+            Upload file
+            <VisuallyHiddenInputt
+              type="file"
+              onChange={(e) => setStdImage(e.target.files[0])}
+            />
+          </Button>
+          <Typography marginTop={1} paddingLeft={1}>
+            {stdImage ? stdImage.name.slice(0, 15) : 'No file chosen'}
+          </Typography>
+        </Grid>
+        <Grid item sm={12} marginTop={'20px'}>
+          <Button
+            sx={{ width: '100%' }}
+            variant="contained"
+            onClick={handlerStd}
+          >
+            ADD STUDENT
+          </Button>
+        </Grid>
+      </Grid>
     </>
   )
 }
