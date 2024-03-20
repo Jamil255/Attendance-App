@@ -6,6 +6,11 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import Button from '@mui/material/Button'
 import styled from '@emotion/styled'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
+import ToastAlert from '../../utills/toast'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { auth, db } from '../../firebase'
+import { uploadFile } from '../../utills/uploadImage'
+import { doc, setDoc } from 'firebase/firestore'
 const VisuallyHiddenInputt = styled('input')({
   clip: 'rect(0 0 0 0)',
   clipPath: 'inset(50%)',
@@ -19,6 +24,38 @@ const VisuallyHiddenInputt = styled('input')({
 })
 const Dashboard = () => {
   const [showPassword, setPasswordShow] = useState(false)
+  const [fullName, setFullName] = useState('')
+  const [cousre, setCousre] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [stdImage, setStdImage] = useState('')
+  const handlerStd = async () => {
+    if (!fullName || !email || !password || !cousre || !stdImage) {
+      ToastAlert('Required Field', 'warning')
+      return
+    }
+    console.log(email, password)
+    try {
+      const userData = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      )
+      const userId = userData.user.uid
+      const imageURL = await uploadFile(stdImage)
+      const obj = {
+        email,
+        name: fullName,
+        cousre,
+        imageURL,
+        type: 'std',
+      }
+      await setDoc(doc(db, 'user', userId), obj)
+      ToastAlert('student create', 'success')
+    } catch (error) {
+      ToastAlert(error.message || error.code, 'error')
+    }
+  }
   return (
     <>
       <AdminLayout>
@@ -26,13 +63,23 @@ const Dashboard = () => {
         <Divider />
         <Grid container mt={2} columnSpacing={5} rowSpacing={5}>
           <Grid item sm={6}>
-            <InputField label="Full Name" />
+            <InputField
+              label="Full Name"
+              onChange={(e) => setFullName(e.target.value)}
+            />
           </Grid>
           <Grid item sm={6}>
-            <InputField label="Coruse Name" />
+            <InputField
+              label="Coruse Name"
+              onChange={(e) => setCousre(e.target.value)}
+            />
           </Grid>
           <Grid item sm={6} marginTop={'14px'}>
-            <InputField label="Email" />
+            <InputField
+              label="Email"
+              type="email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </Grid>
           <Grid item sm={6}>
             <TextField
@@ -43,6 +90,7 @@ const Dashboard = () => {
               label="Password"
               id="password"
               autoComplete="current-password"
+              onChange={(e) => setPassword(e.target.value)}
               InputProps={{
                 endAdornment: (
                   <InputAdornment
@@ -65,12 +113,19 @@ const Dashboard = () => {
               startIcon={<CloudUploadIcon />}
             >
               Upload file
-              <VisuallyHiddenInputt type="file" />
+              <VisuallyHiddenInputt
+                type="file"
+                onChange={(e) => setStdImage(e.target.files[0])}
+              />
             </Button>
           </Grid>
           <Grid item sm={12} marginTop={'20px'}>
             {/* <InputField label="Password" /> */}
-            <Button sx={{ width: '100%' }} variant="contained">
+            <Button
+              sx={{ width: '100%' }}
+              variant="contained"
+              onClick={handlerStd}
+            >
               ADD STUDENT
             </Button>
           </Grid>
