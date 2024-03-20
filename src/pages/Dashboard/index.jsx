@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import AdminLayout from '../../components/AdminLayout'
-import { Divider, Grid } from '@mui/material'
+import { Divider, Grid, InputAdornment, TextField } from '@mui/material'
 import InputField from '../../components/inputFeild'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import Button from '@mui/material/Button'
 import styled from '@emotion/styled'
-import MuiTable from '../../components/Table'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 const VisuallyHiddenInputt = styled('input')({
   clip: 'rect(0 0 0 0)',
   clipPath: 'inset(50%)',
@@ -18,6 +18,7 @@ const VisuallyHiddenInputt = styled('input')({
   width: 1,
 })
 const Dashboard = () => {
+  const [showPassword, setPasswordShow] = useState(false)
   return (
     <>
       <AdminLayout>
@@ -30,11 +31,30 @@ const Dashboard = () => {
           <Grid item sm={6}>
             <InputField label="Coruse Name" />
           </Grid>
-          <Grid item sm={6}>
+          <Grid item sm={6} marginTop={'14px'}>
             <InputField label="Email" />
           </Grid>
           <Grid item sm={6}>
-            <InputField label="Password" type="password" />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              type={showPassword ? 'text' : 'password'}
+              label="Password"
+              id="password"
+              autoComplete="current-password"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment
+                    sx={{ cursor: 'pointer' }}
+                    position="end"
+                    onClick={() => setPasswordShow(!showPassword)}
+                  >
+                    {!showPassword ? <VisibilityOff /> : <Visibility />}
+                  </InputAdornment>
+                ),
+              }}
+            />
           </Grid>
           <Grid item sm={12}>
             <Button
@@ -48,7 +68,7 @@ const Dashboard = () => {
               <VisuallyHiddenInputt type="file" />
             </Button>
           </Grid>
-          <Grid item sm={12}>
+          <Grid item sm={12} marginTop={'20px'}>
             {/* <InputField label="Password" /> */}
             <Button sx={{ width: '100%' }} variant="contained">
               ADD STUDENT

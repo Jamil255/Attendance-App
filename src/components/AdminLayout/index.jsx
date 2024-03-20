@@ -16,8 +16,23 @@ import MailIcon from '@mui/icons-material/Mail'
 import MenuIcon from '@mui/icons-material/Menu'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
+import { NavLink } from 'react-router-dom'
 
 const drawerWidth = 240
+const MenuItems = [
+  {
+    title: 'Add Student',
+    href: '/dashboard',
+  },
+  {
+    title: 'Students',
+    href: '/stdlist',
+  },
+  {
+    title: 'Addentance',
+    href: '/addentance',
+  },
+]
 
 function AdminLayout(props) {
   const { window, children } = props
@@ -44,21 +59,25 @@ function AdminLayout(props) {
       <Toolbar />
       <Divider />
       <List>
-        {['Add Student', 'Students', 'Attendance'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
+        {MenuItems.map((obj, index) => (
+          <NavLink
+            style={{ color: 'black', textDecoration: 'none' }}
+            to={obj.href}
+          >
+            <ListItem key={index} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon>
+                <ListItemText primary={obj.title} />
+              </ListItemButton>
+            </ListItem>
+          </NavLink>
         ))}
       </List>
     </div>
   )
 
-  // Remove this const when copying and pasting into your project.
   const container =
     window !== undefined ? () => window().document.body : undefined
 
@@ -142,10 +161,6 @@ function AdminLayout(props) {
 }
 
 AdminLayout.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * Remove this when copying and pasting into your project.
-   */
   window: PropTypes.func,
 }
 
