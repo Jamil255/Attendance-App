@@ -1,10 +1,11 @@
-import React from 'react';
+import React from 'react'
 
-const  = () => {
+const StdList = () => {
   return (
     <>
-      <h1>stdlist</h1> 
+      <h1>stdlist</h1>
     </>
-  );}
+  )
+}
 
-export default StdList;
+export default StdList

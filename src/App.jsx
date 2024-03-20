@@ -7,6 +7,7 @@ import AuthRoute from './Routes/AuthRoute'
 import AdminProtectedRoute, { StdProtectedRoute } from './Routes/ProtectedRoute'
 import Portal from './pages/Portal'
 import FoundNot from './pages/FoundNot'
+import StdList from './pages/stdlist'
 const App = () => {
   return (
     <>
@@ -21,6 +22,7 @@ const App = () => {
 
         <Route element={<AdminProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/stdlist" element={<StdList />} />
         </Route>
 
         <Route element={<StdProtectedRoute />}>
