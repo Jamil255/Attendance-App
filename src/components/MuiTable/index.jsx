@@ -1,86 +1,178 @@
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../firebase';
+import React, { useEffect, useState } from 'react'
+import { collection, doc, getDocs, updateDoc } from 'firebase/firestore'
+import { db } from '../../firebase'
+import { ColorRing } from 'react-loader-spinner'
 
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableContainer from '@mui/material/TableContainer'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
+import Paper from '@mui/material/Paper'
+import { Button, TextField } from '@mui/material'
+import ToastAlert from '../../utills/toast'
+
+function createData(id, name, course, email, isActive) {
+  return { id, name, course, email, isActive }
 }
 
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
-
+const initialRows = [
+  createData(1, 'John Doe', 'Math', 'john@example.com', true),
+  createData(2, 'Jane Smith', 'Science', 'jane@example.com', false),
+  // Add more data as needed
+]
 
 export default function MuiTable() {
-    const [stdListData, setstdListData] = useState([])
-    useEffect(() => {
-        const fetchData = async () => {
-            const docSnap = await getDocs(collection(db, "user"))
-            const tempArr = []
-            docSnap.forEach((user) => {
-                if (user.data().type !== "admin") {
-                    tempArr.push({ ...user.data(), id: user.id })
-                }
-            })
-            setstdListData(tempArr)
+  const [stdListData, setStdListData] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [editIndex, setEditIndex] = useState(null)
+  const [editValues, setEditValues] = useState({})
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const docSnap = await getDocs(collection(db, 'user'))
+      const tempArr = []
+      docSnap.forEach((user) => {
+        if (user.data().type !== 'admin') {
+          tempArr.push({ ...user.data(), id: user.id })
         }
-        fetchData()
-    }, [])
+      })
+      setStdListData(tempArr)
+      setLoading(false)
+    }
+    fetchData()
+  }, [])
 
+  const handleEditClick = (index, values) => {
+    setEditIndex(index)
+    setEditValues({ ...values })
+    console.log(editValues?.isActive)
+  }
 
-    return (
+  const handleInputChange = (e, field) => {
+    console.log(field)
+    const value = e.target.value
+    setEditValues((prevState) => ({
+      ...prevState,
+    }))
+  }
+
+  const handleSaveClick = async () => {
+    try {
+      const docRef = doc(db, 'user', stdListData[editIndex].id)
+      await updateDoc(docRef, editValues)
+      console.log(editValues)
+      const updatedData = stdListData.map((item, index) => {
+        if (index === editIndex) {
+          return { ...item, ...editValues }
+        }
+        ToastAlert('Edit successfully', 'success')
+        return item
+      })
+      setStdListData(updatedData)
+      setEditIndex(null)
+      setEditValues('')
+    } catch (error) {
+      ToastAlert('Error updating document: ', error)
+      // Handle error
+    }
+  }
+
+  return (
+    <>
+      {loading ? (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '60vh',
+          }}
+        >
+          <ColorRing
+            visible={true}
+            height="130"
+            width="130"
+            ariaLabel="color-ring-loading"
+            wrapperStyle={{}}
+            wrapperClass="color-ring-wrapper"
+            colors={['#1258c9', '#1258c9', '#1258c9', '#1258c9', '#1258c9']}
+          />
+        </div>
+      ) : (
         <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Full Name</TableCell>
-                        <TableCell align="right">Course</TableCell>
-                        <TableCell align="right">Email</TableCell>
-                        <TableCell align="right">Status</TableCell>
-                        <TableCell align="right">Actions</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Full Name</TableCell>
+                <TableCell align="right">Course</TableCell>
+                <TableCell align="right">Email</TableCell>
+                <TableCell align="right">Status</TableCell>
+                <TableCell align="right">Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {stdListData.map((std, index) => (
+                <TableRow key={std.id}>
+                  <TableCell component="th" scope="row">
+                    {editIndex === index ? (
+                      <TextField
+                        value={editValues.name}
+                        onChange={(e) => handleInputChange(e, 'name')}
+                      />
+                    ) : (
+                      std.name
+                    )}
+                  </TableCell>
+                  <TableCell align="right">
+                    {editIndex === index ? (
+                      <TextField
+                        value={editValues.cousre || std.cousre}
+                        onChange={(e) => handleInputChange(e, 'cousre')}
+                      />
+                    ) : (
+                      std.cousre
+                    )}
+                  </TableCell>
+                  <TableCell align="right">
+                    {editIndex === index ? (
+                      <TextField
+                        value={editValues.email || std.email}
+                        onChange={(e) => handleInputChange(e, 'email')}
+                      />
+                    ) : (
+                      std.email
+                    )}
+                  </TableCell>
+                  <TableCell align="right">
+                    {editIndex === index ? (
+                      <TextField
+                        value={editValues.isActive}
+                        onChange={(e) => handleInputChange(e, 'isActive')}
+                      />
+                    ) : editValues.isActive ? (
+                      'true'
+                    ) : (
+                      'false'
+                    )}
+                  </TableCell>
 
-                    {
-                        stdListData.map(std => {
-                            return (
-                                <TableRow
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                >
-                                    <TableCell component="th" scope="row">
-                                        {std.name}
-                                    </TableCell>
-                                    <TableCell align="right"> {std.cousre}</TableCell>
-                                    <TableCell align="right">
-                                        {std.email}
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        {std.isActive ? "Active" : "In Active"}
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        edit
-                                    </TableCell>
-                                </TableRow>
-                            )
-                        })
-                    }
-
-                </TableBody>
-            </Table>
+                  <TableCell align="right">
+                    {editIndex === index ? (
+                      <Button onClick={handleSaveClick}>Save</Button>
+                    ) : (
+                      <Button onClick={() => handleEditClick(index, std)}>
+                        Edit
+                      </Button>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </TableContainer>
-    );
+      )}
+    </>
+  )
 }

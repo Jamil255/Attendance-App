@@ -17,29 +17,24 @@ import MenuIcon from '@mui/icons-material/Menu'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import { NavLink } from 'react-router-dom'
-import AddIcon from '@mui/icons-material/Add'
+import DashboardIcon from '@mui/icons-material/Dashboard'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 
 const drawerWidth = 240
 const MenuItems = [
   {
-    title: 'Add Student',
-    href: '/dashboard',
-    icon: <AddIcon />,
+    title: 'Dashboard',
+    href: '/portal',
+    icon: <DashboardIcon />,
   },
   {
-    title: 'Students',
-    href: '/stdlist',
+    title: 'Setting',
+    href: '/setting',
     icon: <AccountCircleIcon />,
-  },
-  {
-    title: 'Addentance',
-    href: '/addentance',
-    icon: <InboxIcon />,
   },
 ]
 
-function AdminLayout(props) {
+function StudentLayout(props) {
   const { window, children } = props
   const [mobileOpen, setMobileOpen] = React.useState(false)
   const [isClosing, setIsClosing] = React.useState(false)
@@ -106,7 +101,7 @@ function AdminLayout(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Admin Dashboard
+            Student Dashboard
           </Typography>
         </Toolbar>
       </AppBar>
@@ -164,8 +159,8 @@ function AdminLayout(props) {
   )
 }
 
-AdminLayout.propTypes = {
+StudentLayout.propTypes = {
   window: PropTypes.func,
 }
 
-export default AdminLayout
+export default StudentLayout
