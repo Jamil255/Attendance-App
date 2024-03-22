@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { collection, doc, getDocs, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase'
 import { ColorRing } from 'react-loader-spinner'
-
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -17,58 +16,37 @@ function createData(id, name, course, email, isActive) {
   return { id, name, course, email, isActive }
 }
 
-const initialRows = [
-  createData(1, 'John Doe', 'Math', 'john@example.com', true),
-  createData(2, 'Jane Smith', 'Science', 'jane@example.com', false),
-]
-const handleSaveClick = async (e) => {
-  e.preventDefault()
-  try {
-    const docRef = doc(db, 'user', stdListData[editIndex].id)
-    await updateDoc(docRef, editValues)
-    console.log(editValues)
-    const updatedData = stdListData.map((item, index) => {
-      if (index === editIndex) {
-        return { ...item, ...editValues }
-      }
-      ToastAlert('Edit successfully', 'success')
-      return item
-    })
-    setStdListData(updatedData)
-    setEditIndex(null)
-    setEditValues({})
-  } catch (error) {
-    ToastAlert('Error updating document: ', error)
-  }
-}
-
-export default function MuiTable() {
+export default function MuiTable({ filterData }) {
   const [stdListData, setStdListData] = useState([])
   const [loading, setLoading] = useState(true)
   const [editIndex, setEditIndex] = useState(null)
   const [editValues, setEditValues] = useState({})
-
+console.log(filterData);
   useEffect(() => {
     const fetchData = async () => {
-      const docSnap = await getDocs(collection(db, 'user'))
-      const tempArr = []
-      docSnap.forEach((user) => {
-        if (user.data().type !== 'admin') {
-          tempArr.push({ ...user.data(), id: user.id })
-        }
-      })
-      setStdListData(tempArr)
-      setLoading(false)
-      setEditValues(stdListData)
+      if (filterData.length > 0) {
+        setStdListData(filterData)
+        setLoading(false)
+        setEditValues(filterData)
+      } else {
+        const docSnap = await getDocs(collection(db, 'user'))
+        const tempArr = []
+        docSnap.forEach((user) => {
+          if (user.data().type !== 'admin') {
+            tempArr.push({ ...user.data(), id: user.id })
+          }
+        })
+        setStdListData(tempArr)
+        setLoading(false)
+        setEditValues(tempArr)
+      }
     }
     fetchData()
-  }, [])
+  }, [filterData])
 
   const handleEditClick = (index, values) => {
-    console.log(index, values)
     setEditIndex(index)
     setEditValues({ ...values })
-    console.log(editValues?.isActive)
   }
 
   const handleInputChange = (e, field) => {
@@ -85,7 +63,6 @@ export default function MuiTable() {
       const docRef = doc(db, 'user', stdListData[editIndex].id)
       await updateDoc(docRef, editValues)
       ToastAlert('Edit successfully', 'success')
-      console.log(editValues)
       const updatedData = stdListData.map((item, index) => {
         if (index === editIndex) {
           return { ...item, ...editValues }
@@ -97,7 +74,6 @@ export default function MuiTable() {
       setEditValues({})
     } catch (error) {
       ToastAlert('Error updating document: ', error)
-      // Handle error
     }
   }
 
@@ -150,7 +126,7 @@ export default function MuiTable() {
                   <TableCell align="right">
                     {editIndex === index ? (
                       <TextField
-                        value={editValues.cousre || std.cousre}
+                        value={editValues.cousre}
                         onChange={(e) => handleInputChange(e, 'cousre')}
                       />
                     ) : (
@@ -160,7 +136,7 @@ export default function MuiTable() {
                   <TableCell align="right">
                     {editIndex === index ? (
                       <TextField
-                        value={editValues.email || std.email}
+                        value={editValues.email}
                         onChange={(e) => handleInputChange(e, 'email')}
                       />
                     ) : (
@@ -170,7 +146,7 @@ export default function MuiTable() {
                   <TableCell align="right">
                     {editIndex === index ? (
                       <TextField
-                        value={editValues.isActive || std.isActive}
+                        value={editValues.isActive}
                         onChange={(e) => handleInputChange(e, 'isActive')}
                       />
                     ) : editValues?.isActive ? (

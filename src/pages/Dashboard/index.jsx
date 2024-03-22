@@ -17,6 +17,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth, db } from '../../firebase'
 import { uploadFile } from '../../utills/uploadImage'
 import { doc, setDoc } from 'firebase/firestore'
+import DropDown from '../../components/dropdown'
 const VisuallyHiddenInputt = styled('input')({
   clip: 'rect(0 0 0 0)',
   clipPath: 'inset(50%)',
@@ -41,7 +42,6 @@ const Dashboard = () => {
       ToastAlert('Required Field', 'warning')
       return
     }
-    console.log(email, password)
     try {
       const userData = await createUserWithEmailAndPassword(
         auth,
@@ -83,8 +83,8 @@ const Dashboard = () => {
         </Grid>
         <Grid item sm={6}>
           <InputField
+            label=" cousre"
             value={cousre}
-            label="Coruse Name"
             onChange={(e) => setCousre(e.target.value)}
           />
         </Grid>
