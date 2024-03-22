@@ -19,30 +19,20 @@ import Typography from '@mui/material/Typography'
 import { NavLink } from 'react-router-dom'
 import AddIcon from '@mui/icons-material/Add'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import LogoutIcon from '@mui/icons-material/Logout'
+import ToastAlert from '../../utills/toast'
 
 const drawerWidth = 240
-const MenuItems = [
-  {
-    title: 'Add Student',
-    href: '/dashboard',
-    icon: <AddIcon />,
-  },
-  {
-    title: 'Students',
-    href: '/stdlist',
-    icon: <AccountCircleIcon />,
-  },
-  {
-    title: 'Addentance',
-    href: '/addentance',
-    icon: <InboxIcon />,
-  },
-]
 
 function AdminLayout(props) {
   const { window, children } = props
   const [mobileOpen, setMobileOpen] = React.useState(false)
-  const [isClosing, setIsClosing] = React.useState(false)
+    const [isClosing, setIsClosing] = React.useState(false)
+  const logOut = () => {
+    localStorage.clear()
+location.replace("/")
+      console.log("logged out");
+  }
 
   const handleDrawerClose = () => {
     setIsClosing(true)
@@ -59,6 +49,29 @@ function AdminLayout(props) {
     }
   }
 
+  const MenuItems = [
+    {
+      title: 'Add Student',
+      href: '/dashboard',
+      icon: <AddIcon />,
+    },
+    {
+      title: 'Students',
+      href: '/stdlist',
+      icon: <AccountCircleIcon />,
+    },
+    {
+      title: 'Addentance',
+      href: '/addentance',
+      icon: <InboxIcon />,
+    },
+    {
+      title: 'Logout',
+      icon: <LogoutIcon />,
+      onClick: logOut,
+    },
+  ]
+
   const drawer = (
     <div>
       <Toolbar />
@@ -70,12 +83,13 @@ function AdminLayout(props) {
             to={obj.href}
             key={index}
           >
-            <ListItem key={index} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>{obj.icon}</ListItemIcon>
-                <ListItemText primary={obj.title} />
-              </ListItemButton>
-            </ListItem>
+          <ListItem key={index} disablePadding>
+  <ListItemButton onClick={obj.onClick}>
+    <ListItemIcon>{obj.icon}</ListItemIcon>
+    <ListItemText primary={obj.title} />
+  </ListItemButton>
+</ListItem>
+
           </NavLink>
         ))}
       </List>
@@ -115,7 +129,6 @@ function AdminLayout(props) {
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           container={container}
           variant="temporary"
@@ -148,7 +161,8 @@ function AdminLayout(props) {
         >
           {drawer}
         </Drawer>
-      </Box>
+          </Box>
+          
       <Box
         component="main"
         sx={{

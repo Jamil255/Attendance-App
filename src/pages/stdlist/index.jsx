@@ -5,7 +5,7 @@ import MuiTable from '../../components/MuiTable'
 const StdList = () => {
   return (
     <>
-      <h1>students</h1>
+      <h1>Student</h1>
       <Divider />
       <MuiTable />
     </>

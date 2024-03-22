@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route  } from 'react-router-dom'
 import { Bounce, ToastContainer } from 'react-toastify'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
@@ -7,6 +7,7 @@ import AdminProtectedRoute, { StdProtectedRoute } from './Routes/ProtectedRoute'
 import Portal from './pages/Portal'
 import FoundNot from './pages/FoundNot'
 import StdList from './pages/stdlist'
+import Setting from './pages/Setting'
 const App = () => {
   return (
     <>
@@ -16,7 +17,7 @@ const App = () => {
         </Route>
 
         <Route element={<AuthRoute />}>
-          <Route index element={<Login />} />
+          <Route path="/" exact element={<Login />} />
         </Route>
 
         <Route element={<AdminProtectedRoute />}>
@@ -26,6 +27,7 @@ const App = () => {
 
         <Route element={<StdProtectedRoute />}>
           <Route path="/portal" element={<Portal />} />
+          <Route path="/setting" element={<Setting />} />
         </Route>
       </Routes>
 

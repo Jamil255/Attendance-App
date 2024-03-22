@@ -1,9 +1,11 @@
 import React from 'react'
+import CardUi from '../../components/card'
 
 const Portal = () => {
   return (
     <>
-      <p>hello..</p>
+      <img src="" alt="" />
+      <CardUi />
     </>
   )
 }

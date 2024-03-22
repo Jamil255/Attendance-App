@@ -22,6 +22,27 @@ const initialRows = [
   createData(2, 'Jane Smith', 'Science', 'jane@example.com', false),
   // Add more data as needed
 ]
+const handleSaveClick = async (e) => {
+  e.preventDefault()
+  try {
+    const docRef = doc(db, 'user', stdListData[editIndex].id)
+    await updateDoc(docRef, editValues)
+    console.log(editValues)
+    const updatedData = stdListData.map((item, index) => {
+      if (index === editIndex) {
+        return { ...item, ...editValues }
+      }
+      ToastAlert('Edit successfully', 'success')
+      return item
+    })
+    setStdListData(updatedData)
+    setEditIndex(null)
+    setEditValues({})
+  } catch (error) {
+    ToastAlert('Error updating document: ', error)
+    // Handle error
+  }
+}
 
 export default function MuiTable() {
   const [stdListData, setStdListData] = useState([])
@@ -40,6 +61,7 @@ export default function MuiTable() {
       })
       setStdListData(tempArr)
       setLoading(false)
+      setEditValues(stdListData)
     }
     fetchData()
   }, [])
@@ -51,28 +73,29 @@ export default function MuiTable() {
   }
 
   const handleInputChange = (e, field) => {
-    console.log(field)
     const value = e.target.value
     setEditValues((prevState) => ({
       ...prevState,
+      [field]: value,
     }))
   }
 
-  const handleSaveClick = async () => {
+  const handleSaveClick = async (e) => {
+    e.preventDefault()
     try {
       const docRef = doc(db, 'user', stdListData[editIndex].id)
       await updateDoc(docRef, editValues)
+      ToastAlert('Edit successfully', 'success')
       console.log(editValues)
       const updatedData = stdListData.map((item, index) => {
         if (index === editIndex) {
           return { ...item, ...editValues }
         }
-        ToastAlert('Edit successfully', 'success')
         return item
       })
       setStdListData(updatedData)
       setEditIndex(null)
-      setEditValues('')
+      setEditValues({})
     } catch (error) {
       ToastAlert('Error updating document: ', error)
       // Handle error
@@ -151,16 +174,18 @@ export default function MuiTable() {
                         value={editValues.isActive}
                         onChange={(e) => handleInputChange(e, 'isActive')}
                       />
-                    ) : editValues.isActive ? (
-                      'true'
+                    ) : editValues?.isActive ? (
+                      'active'
                     ) : (
-                      'false'
+                      'inactive'
                     )}
                   </TableCell>
 
                   <TableCell align="right">
                     {editIndex === index ? (
-                      <Button onClick={handleSaveClick}>Save</Button>
+                      <Button type="button" onClick={handleSaveClick}>
+                        Save
+                      </Button>
                     ) : (
                       <Button onClick={() => handleEditClick(index, std)}>
                         Edit

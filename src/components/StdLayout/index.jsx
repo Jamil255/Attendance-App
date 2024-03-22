@@ -19,6 +19,7 @@ import Typography from '@mui/material/Typography'
 import { NavLink } from 'react-router-dom'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const drawerWidth = 240
 const MenuItems = [
@@ -30,7 +31,7 @@ const MenuItems = [
   {
     title: 'Setting',
     href: '/setting',
-    icon: <AccountCircleIcon />,
+    icon: <SettingsIcon />,
   },
 ]
 

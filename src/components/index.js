@@ -1,4 +1,5 @@
 import {
     AdminLayout,
-    InputField
+    InputField,
+    MuiTable
 }
