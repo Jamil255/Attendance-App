@@ -19,6 +19,7 @@ import Typography from '@mui/material/Typography'
 import { NavLink } from 'react-router-dom'
 import AddIcon from '@mui/icons-material/Add'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import LogoutIcon from '@mui/icons-material/Logout'
 import ToastAlert from '../../utills/toast'
 
@@ -27,11 +28,11 @@ const drawerWidth = 240
 function AdminLayout(props) {
   const { window, children } = props
   const [mobileOpen, setMobileOpen] = React.useState(false)
-    const [isClosing, setIsClosing] = React.useState(false)
+  const [isClosing, setIsClosing] = React.useState(false)
   const logOut = () => {
     localStorage.clear()
-location.replace("/")
-      console.log("logged out");
+    location.replace('/')
+    console.log('logged out')
   }
 
   const handleDrawerClose = () => {
@@ -63,7 +64,7 @@ location.replace("/")
     {
       title: 'Addentance',
       href: '/addentance',
-      icon: <InboxIcon />,
+      icon: <CheckCircleOutlineIcon />,
     },
     {
       title: 'Logout',
@@ -83,13 +84,12 @@ location.replace("/")
             to={obj.href}
             key={index}
           >
-          <ListItem key={index} disablePadding>
-  <ListItemButton onClick={obj.onClick}>
-    <ListItemIcon>{obj.icon}</ListItemIcon>
-    <ListItemText primary={obj.title} />
-  </ListItemButton>
-</ListItem>
-
+            <ListItem key={index} disablePadding>
+              <ListItemButton onClick={obj.onClick}>
+                <ListItemIcon>{obj.icon}</ListItemIcon>
+                <ListItemText primary={obj.title} />
+              </ListItemButton>
+            </ListItem>
           </NavLink>
         ))}
       </List>
@@ -161,8 +161,8 @@ location.replace("/")
         >
           {drawer}
         </Drawer>
-          </Box>
-          
+      </Box>
+
       <Box
         component="main"
         sx={{

@@ -20,7 +20,6 @@ function createData(id, name, course, email, isActive) {
 const initialRows = [
   createData(1, 'John Doe', 'Math', 'john@example.com', true),
   createData(2, 'Jane Smith', 'Science', 'jane@example.com', false),
-  // Add more data as needed
 ]
 const handleSaveClick = async (e) => {
   e.preventDefault()
@@ -40,7 +39,6 @@ const handleSaveClick = async (e) => {
     setEditValues({})
   } catch (error) {
     ToastAlert('Error updating document: ', error)
-    // Handle error
   }
 }
 
@@ -67,6 +65,7 @@ export default function MuiTable() {
   }, [])
 
   const handleEditClick = (index, values) => {
+    console.log(index, values)
     setEditIndex(index)
     setEditValues({ ...values })
     console.log(editValues?.isActive)
@@ -171,13 +170,13 @@ export default function MuiTable() {
                   <TableCell align="right">
                     {editIndex === index ? (
                       <TextField
-                        value={editValues.isActive}
+                        value={editValues.isActive || std.isActive}
                         onChange={(e) => handleInputChange(e, 'isActive')}
                       />
                     ) : editValues?.isActive ? (
-                      'active'
+                      'Active'
                     ) : (
-                      'inactive'
+                      'Active'
                     )}
                   </TableCell>
 
