@@ -3,12 +3,12 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 const firebaseConfig = {
-    apiKey: "AIzaSyAjnrHNU_ukZmcxTU0JcENVFNplfzbkeUY",
-    authDomain: "attendance-app-281d9.firebaseapp.com",
-    projectId: "attendance-app-281d9",
-    storageBucket: "attendance-app-281d9.appspot.com",
-    messagingSenderId: "972273260512",
-    appId: "1:972273260512:web:9415b90b3b87aebe467d85"
+    apiKey: import.meta.env.VITE_REACT_API_URL,
+    authDomain: import.meta.env.VITE_AUTH_ID,
+    projectId: import.meta.env.VITE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_REACT_SENDER_ID_URL,
+    appId: import.meta.env.VITE_REACT_API_ID_URL
 };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);

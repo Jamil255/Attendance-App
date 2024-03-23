@@ -10,6 +10,7 @@ import StdList from './pages/stdlist'
 import Setting from './pages/profile'
 import AttendanceReport from './pages/AttendanceReport'
 import EditProfile from './pages/profile'
+import SignUp from './pages/Signup'
 const App = () => {
   return (
     <>
