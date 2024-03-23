@@ -29,6 +29,7 @@ function AdminLayout(props) {
   const { window, children } = props
   const [mobileOpen, setMobileOpen] = React.useState(false)
   const [isClosing, setIsClosing] = React.useState(false)
+
   const logOut = () => {
     localStorage.clear()
     location.replace('/')

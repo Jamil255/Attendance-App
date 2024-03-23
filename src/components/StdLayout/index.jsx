@@ -19,7 +19,9 @@ import Typography from '@mui/material/Typography'
 import { NavLink } from 'react-router-dom'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-import SettingsIcon from '@mui/icons-material/Settings';
+import SettingsIcon from '@mui/icons-material/Settings'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
+import LogoutIcon from '@mui/icons-material/Logout'
 
 const drawerWidth = 240
 const MenuItems = [
@@ -29,9 +31,22 @@ const MenuItems = [
     icon: <DashboardIcon />,
   },
   {
-    title: 'Setting',
-    href: '/setting',
-    icon: <SettingsIcon />,
+    title: 'Attendance Report',
+    href: '/attendance',
+    icon: <CheckCircleOutlineIcon />,
+  },
+  {
+    title: 'Edit Profile',
+    href: '/editprofile',
+    icon: <AccountCircleIcon />,
+  },
+  {
+    title: 'Logout',
+    icon: <LogoutIcon />,
+    onClick: () => {
+      localStorage.clear()
+      location.replace('/')
+    },
   },
 ]
 
@@ -39,6 +54,10 @@ function StudentLayout(props) {
   const { window, children } = props
   const [mobileOpen, setMobileOpen] = React.useState(false)
   const [isClosing, setIsClosing] = React.useState(false)
+  //   const logOut = () => {
+  //     localStorage.clear()
+  //     location.replace('/')
+  //   }
 
   const handleDrawerClose = () => {
     setIsClosing(true)
@@ -67,7 +86,7 @@ function StudentLayout(props) {
             key={index}
           >
             <ListItem key={index} disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={obj.onClick}>
                 <ListItemIcon>{obj.icon}</ListItemIcon>
                 <ListItemText primary={obj.title} />
               </ListItemButton>
