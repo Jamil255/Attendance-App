@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import AdminLayout from '../../components/AdminLayout'
 import {
+  Autocomplete,
   Divider,
   Grid,
   InputAdornment,
@@ -29,6 +30,12 @@ const VisuallyHiddenInputt = styled('input')({
   whiteSpace: 'nowrap',
   width: 1,
 })
+const top100Films = [
+  { label: 'web and app' },
+  { label: 'Python' },
+  { label: 'Java' },
+  { label: 'Fultter' },
+]
 const Dashboard = () => {
   const [showPassword, setPasswordShow] = useState(false)
   const [fullName, setFullName] = useState('')
@@ -36,7 +43,7 @@ const Dashboard = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [stdImage, setStdImage] = useState('')
-
+  console.log('cousre', cousre)
   const handlerStd = async () => {
     if (!fullName || !email || !password || !cousre || !stdImage) {
       ToastAlert('Required Field', 'warning')
@@ -82,10 +89,14 @@ const Dashboard = () => {
           />
         </Grid>
         <Grid item sm={6}>
-          <InputField
-            label=" cousre"
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options={top100Films}
             value={cousre}
-            onChange={(e) => setCousre(e.target.value)}
+            sx={{ width: 470 }}
+            renderInput={(params) => <TextField {...params} label="Course" />}
+            onChange={(e, value) => setCousre(value.label)}
           />
         </Grid>
         <Grid item sm={6} marginTop={'14px'}>

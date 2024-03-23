@@ -2,15 +2,16 @@ import * as React from 'react'
 import TextField from '@mui/material/TextField'
 import Autocomplete from '@mui/material/Autocomplete'
 
-export default function DropDown({ handleCourseFilter }) {
+export default function DropDown({ handleCourseFilter,addCousre }) {
   return (
     <Autocomplete
-      disablePortal
-      id="combo-box-demo"
-      options={top100Films}
-      sx={{ width: 470 }}
-      renderInput={(params) => <TextField {...params} label="Course" />}
-      onChange={handleCourseFilter}
+          disablePortal
+          id="combo-box-demo"
+          options={top100Films}
+          sx={{ width: 300 }}
+          renderInput={(params) => <TextField {...params} label="Course" />}
+          onChange={handleCourseFilter}
+          onCanPlay={addCousre}
     />
   )
 }
