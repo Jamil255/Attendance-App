@@ -1,7 +1,7 @@
 import { TextField } from '@mui/material'
 import React from 'react'
 
-const InputField = ({ label = 'outlined', type = 'text', onChange, value }) => {
+const InputField = ({ label = 'outlined', type = 'text', onChange, value ,...props}) => {
   return (
     <TextField
       type={type}
@@ -9,7 +9,8 @@ const InputField = ({ label = 'outlined', type = 'text', onChange, value }) => {
       variant="outlined"
       sx={{ width: '100%' }}
       onChange={onChange}
-      value={value}
+          value={value}
+          {...props}
     />
   )
 }

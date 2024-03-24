@@ -19,6 +19,7 @@ import { auth, db } from '../../firebase'
 import { uploadFile } from '../../utills/uploadImage'
 import { doc, setDoc } from 'firebase/firestore'
 import DropDown from '../../components/dropdown'
+
 const VisuallyHiddenInputt = styled('input')({
   clip: 'rect(0 0 0 0)',
   clipPath: 'inset(50%)',
@@ -30,12 +31,14 @@ const VisuallyHiddenInputt = styled('input')({
   whiteSpace: 'nowrap',
   width: 1,
 })
+
 const top100Films = [
   { label: 'web and app' },
   { label: 'Python' },
   { label: 'Java' },
   { label: 'Fultter' },
 ]
+
 const Dashboard = () => {
   const [showPassword, setPasswordShow] = useState(false)
   const [fullName, setFullName] = useState('')
@@ -44,6 +47,11 @@ const Dashboard = () => {
   const [password, setPassword] = useState('')
   const [stdImage, setStdImage] = useState('')
   console.log('cousre', cousre)
+
+  const handleCourseChange = (e, value) => {
+    setCousre(value?.label || '')
+  }
+
   const handlerStd = async () => {
     if (!fullName || !email || !password || !cousre || !stdImage) {
       ToastAlert('Required Field', 'warning')
@@ -64,6 +72,7 @@ const Dashboard = () => {
         imageURL,
         type: 'std',
         isActive: true,
+        id: userId,
       }
       await setDoc(doc(db, 'user', userId), obj)
       ToastAlert('student create', 'success')
@@ -76,30 +85,31 @@ const Dashboard = () => {
     setPassword('')
     setStdImage(false)
   }
+
   return (
     <>
       <h2 style={{ textAlign: 'center' }}>Add student</h2>
       <Divider />
       <Grid container mt={2} columnSpacing={5} rowSpacing={5}>
-        <Grid item sm={6}>
+        <Grid item xs={12} sm={6}>
           <InputField
             label="Full Name"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
           />
         </Grid>
-        <Grid item sm={6}>
+        <Grid item xs={12} sm={6}>
           <Autocomplete
             disablePortal
             id="combo-box-demo"
             options={top100Films}
-            value={cousre}
-            sx={{ width: 470 }}
+            value={top100Films.find((option) => option.label === cousre)}
+            sx={{ width: '100%' }}
             renderInput={(params) => <TextField {...params} label="Course" />}
-            onChange={(e, value) => setCousre(value.label)}
+            onChange={handleCourseChange}
           />
         </Grid>
-        <Grid item sm={6} marginTop={'14px'}>
+        <Grid item xs={12} sm={6}>
           <InputField
             label="Email"
             type="email"
@@ -107,7 +117,7 @@ const Dashboard = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </Grid>
-        <Grid item sm={6}>
+        <Grid item xs={12} sm={6}>
           <TextField
             margin="normal"
             required
@@ -131,7 +141,7 @@ const Dashboard = () => {
             }}
           />
         </Grid>
-        <Grid item sm={12} display={'flex'}>
+        <Grid item xs={12} display={'flex'}>
           <Button
             component="label"
             role={undefined}
@@ -149,7 +159,7 @@ const Dashboard = () => {
             {stdImage ? stdImage.name.slice(0, 15) : 'No file chosen'}
           </Typography>
         </Grid>
-        <Grid item sm={12} marginTop={'20px'}>
+        <Grid item xs={12} marginTop={'20px'}>
           <Button
             sx={{ width: '100%' }}
             variant="contained"

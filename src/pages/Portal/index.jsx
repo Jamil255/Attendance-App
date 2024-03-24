@@ -10,10 +10,13 @@ import {
   Paper,
   Avatar,
   Divider,
+  CircularProgress,
 } from '@mui/material'
 
 const Portal = () => {
   const [userData, setUserData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [stdImages, setStdImages] = useState('')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,8 +26,11 @@ const Portal = () => {
         const docSnap = await getDoc(docRef)
         const data = docSnap.data()
         setUserData(data)
+        setStdImages(data.imageURL)
       } catch (error) {
         console.error('Error fetching user data from Firebase:', error)
+      } finally {
+        setLoading(false) // Set loading to false regardless of success or failure
       }
     }
 
@@ -33,19 +39,27 @@ const Portal = () => {
 
   return (
     <div style={{ marginTop: '40px' }}>
-      {userData && (
+      {loading && (
+        <div
+          style={{
+            textAlign: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column-reverse',
+            height: '90vh',
+            marginTop: 20,
+          }}
+        >
+          <CircularProgress />
+        </div>
+      )}
+      {!loading && userData && (
         <>
-          {userData?.imageURL ? (
-            <img src={userData.imageURL} alt="" width={100} height={100} />
-          ) : (
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpHp2DGglYZCHX3QxCvjk-Yg6fmQ6PJAu1W0r_4txTxw&s"
-              width={100}
-              height={100}
-              alt="default"
-            />
-          )}
-
+          <img
+            src={stdImages || '/placeholder.jpeg'}
+            alt=""
+            width={100}
+            height={100}
+          />
           <Divider />
           <TableContainer component={Paper} sx={{ marginTop: 3 }}>
             <Table align="left">
