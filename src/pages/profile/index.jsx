@@ -17,10 +17,8 @@ const EditProfile = () => {
   const [fullName, setFullName] = useState('')
   const [cousre, setCousre] = useState('')
   const [email, setEmail] = useState('')
-  const [stdImage, setStdImage] = useState('')
-  const [password, setPassword] = useState('')
+  const [stdImage, setStdImage] = useState(false)
   const [fieldDisabled, setFieldDisabled] = useState(true)
-  const [refresh, setRefresh] = useState(true)
   useEffect(() => {
     const fetchData = async () => {
       let uid = localStorage.getItem('uid')
@@ -33,7 +31,7 @@ const EditProfile = () => {
       setStdImage(data.imageURL)
     }
     fetchData()
-  }, [refresh])
+  }, [])
 
   const saveHandler = async () => {
     try {
@@ -42,8 +40,8 @@ const EditProfile = () => {
         name: fullName,
         cousre,
       })
-      setRefresh(!refresh)
       ToastAlert('edit successfully', 'success')
+      setFieldDisabled(!fieldDisabled)
     } catch (error) {
       ToastAlert(error.message || error.code, 'error')
     }
@@ -63,7 +61,7 @@ const EditProfile = () => {
         <Grid sm={12} marginLeft={5}>
           <Box
             component={'img'}
-            src={stdImage}
+            src={stdImage ||"./placeholder.jpeg"}
             alt=""
             width={150}
             height={150}

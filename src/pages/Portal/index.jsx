@@ -16,7 +16,7 @@ import {
 const Portal = () => {
   const [userData, setUserData] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [stdImages, setStdImages] = useState('')
+  const [stdImages, setStdImages] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,7 +55,7 @@ const Portal = () => {
       {!loading && userData && (
         <>
           <img
-            src={stdImages || '/placeholder.jpeg'}
+            src={stdImages || './placeholder.jpeg'}
             alt=""
             width={100}
             height={100}
