@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import CircularProgress from '@mui/material/CircularProgress'
 import AdminLayout from '../../components/AdminLayout'
 import {
   Autocomplete,
@@ -19,6 +20,7 @@ import { auth, db } from '../../firebase'
 import { uploadFile } from '../../utills/uploadImage'
 import { doc, setDoc } from 'firebase/firestore'
 import DropDown from '../../components/dropdown'
+import SearchBar from '../../components/searchBar'
 
 const VisuallyHiddenInputt = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -46,7 +48,7 @@ const Dashboard = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [stdImage, setStdImage] = useState('')
-  console.log('cousre', cousre)
+  const [loading, setLoading] = useState(false) // State for loader
 
   const handleCourseChange = (e, value) => {
     setCousre(value?.label || '')
@@ -57,6 +59,10 @@ const Dashboard = () => {
       ToastAlert('Required Field', 'warning')
       return
     }
+
+    // Show loader
+    setLoading(true)
+
     try {
       const userData = await createUserWithEmailAndPassword(
         auth,
@@ -78,7 +84,12 @@ const Dashboard = () => {
       ToastAlert('student create', 'success')
     } catch (error) {
       ToastAlert(error.message || error.code, 'error')
+    } finally {
+      // Hide loader
+      setLoading(false)
     }
+
+    // Reset form fields
     setCousre('')
     setEmail('')
     setFullName('')
@@ -103,13 +114,13 @@ const Dashboard = () => {
             disablePortal
             id="combo-box-demo"
             options={top100Films}
-            value={top100Films.find((option) => option.label === cousre)}
+            value={top100Films.find((option) => option.label == cousre)}
             sx={{ width: '100%' }}
             renderInput={(params) => <TextField {...params} label="Course" />}
             onChange={handleCourseChange}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} marginTop={2}>
           <InputField
             label="Email"
             type="email"
@@ -168,6 +179,18 @@ const Dashboard = () => {
             ADD STUDENT
           </Button>
         </Grid>
+        {loading && (
+          <div
+            style={{
+              position: 'fixed',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            }}
+          >
+            <CircularProgress />
+          </div>
+        )}
       </Grid>
     </>
   )

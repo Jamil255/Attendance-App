@@ -61,7 +61,7 @@ const EditProfile = () => {
         <Grid sm={12} marginLeft={5}>
           <Box
             component={'img'}
-            src={stdImage ||"./placeholder.jpeg"}
+            src={stdImage || './placeholder.jpeg'}
             alt=""
             width={150}
             height={150}

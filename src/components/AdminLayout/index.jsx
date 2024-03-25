@@ -64,7 +64,7 @@ function AdminLayout(props) {
     },
     {
       title: 'Addentance',
-      href: '/addentance',
+      href: '/attendance',
       icon: <CheckCircleOutlineIcon />,
     },
     {

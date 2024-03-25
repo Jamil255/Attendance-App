@@ -32,7 +32,7 @@ const MenuItems = [
   },
   {
     title: 'Attendance Report',
-    href: '/attendance',
+    href: '/attendancereport',
     icon: <CheckCircleOutlineIcon />,
   },
   {

@@ -17,17 +17,17 @@ const bull = (
     •
   </Box>
 )
-export default function AttndCard({ userData, setRefresh, refresh }) {
+export default function StdCard({ userData, setRefresh, refresh }) {
   const handlerCheckIN = async () => {
     try {
       let uid = localStorage.getItem('uid')
       const checkIn =
-        new Date().toDateString() + '' + new Date().toLocaleTimeString()
+        new Date().toDateString() + '  ' + new Date().toLocaleTimeString()
       await updateDoc(doc(db, 'user', uid), {
         checkIn: checkIn,
       })
       setRefresh(!refresh)
-      ToastAlert('Updated check In', 'success')
+      ToastAlert('Check In Update', 'success')
     } catch (error) {
       console.error('Error updating document:', error)
       ToastAlert(error.message || error.code, 'error')
@@ -37,7 +37,7 @@ export default function AttndCard({ userData, setRefresh, refresh }) {
     try {
       let uid = localStorage.getItem('uid')
       const checkOut =
-        new Date().toDateString() + '' + new Date().toLocaleTimeString()
+        new Date().toDateString() + '  ' + new Date().toLocaleTimeString()
       await updateDoc(doc(db, 'user', uid), {
         checkOut: checkOut,
       })

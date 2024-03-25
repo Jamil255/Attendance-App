@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import AttndCard from '../../components/attendCrad'
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../../firebase'
+import StdCard from '../../components/cardstdAttendance'
 
 const AttendanceReport = () => {
   const [userData, setUserData] = useState()
@@ -27,11 +27,7 @@ const AttendanceReport = () => {
       >
         <p>AttendanceReport</p>
       </div>
-      <AttndCard
-        userData={userData}
-        setRefresh={setRefresh}
-        refresh={refresh}
-      />
+      <StdCard userData={userData} setRefresh={setRefresh} refresh={refresh} />
     </>
   )
 }
