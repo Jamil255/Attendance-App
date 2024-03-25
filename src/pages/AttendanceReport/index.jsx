@@ -5,15 +5,16 @@ import { db } from '../../firebase'
 
 const AttendanceReport = () => {
   const [userData, setUserData] = useState()
+  const [refresh, setRefresh] = useState(false)
   useEffect(() => {
     const fetchData = async () => {
       let uid = localStorage.getItem('uid')
       const userListData = await getDoc(doc(db, 'user', uid))
       const data = userListData.data()
-      setUserData(data)
+      setUserData({ ...data, id: userListData.id })
     }
     fetchData()
-  }, [])
+  }, [refresh])
   console.log(userData)
   return (
     <>
@@ -26,7 +27,11 @@ const AttendanceReport = () => {
       >
         <p>AttendanceReport</p>
       </div>
-          <AttndCard userData={ userData} />
+      <AttndCard
+        userData={userData}
+        setRefresh={setRefresh}
+        refresh={refresh}
+      />
     </>
   )
 }
