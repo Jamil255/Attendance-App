@@ -13,15 +13,17 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { useNavigate } from 'react-router-dom'
-import { InputAdornment } from '@mui/material'
+import { InputAdornment, CircularProgress } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import 'react-toastify/dist/ReactToastify.css'
-import { Bounce, toast, ToastContainer } from 'react-toastify'
+import { ToastContainer } from 'react-toastify'
 import { auth, db } from '../../firebase'
 import ToastAlert from '../../utills/toast'
 import { doc, setDoc } from 'firebase/firestore'
+
 const defaultTheme = createTheme()
+
 const SignUp = () => {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
@@ -29,38 +31,48 @@ const SignUp = () => {
   const [showPassword, setPasswordShow] = useState(false)
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
+  const [loading, setLoading] = useState(false) // State to track loading status
+
   const handleClick = () => {
     navigate('/')
   }
-  const handleSubmit = (event) => {
+
+  const handleSubmit = async (event) => {
     event.preventDefault()
     if (!email || !password || !firstName || !lastName) {
       ToastAlert('Missing input field', 'warning')
       return
     }
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => {
-        const uid = userCredential.user.uid
-        console.log(uid)
-        const obj = {
-          firstName: firstName,
-          lastName: lastName,
-          type: 'admin',
-        }
-        const createUser = await setDoc(doc(db, 'user', uid), obj)
-        console.log(createUser)
+    // Set loading to true when submitting
+    setLoading(true)
 
-        ToastAlert('user successfully signup', 'success')
-        //     setTimeout(() => navigate('../Dashboard'), 1000)
-      })
-      .catch((error) => {
-        const errorCode = error.code
-        const errorMessage = error.message
-        console.log(errorCode)
-        ToastAlert(errorCode, 'error')
-        // ..
-      })
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      )
+      const uid = userCredential.user.uid
+      console.log(uid)
+      const obj = {
+        firstName: firstName,
+        lastName: lastName,
+        type: 'admin',
+      }
+      await setDoc(doc(db, 'user', uid), obj)
+
+      ToastAlert('User successfully signed up', 'success')
+      // setTimeout(() => navigate('../Dashboard'), 1000)
+    } catch (error) {
+      const errorCode = error.code
+      const errorMessage = error.message
+      console.log(errorCode)
+      ToastAlert(errorCode, 'error')
+    } finally {
+      // Set loading to false when request is complete
+      setLoading(false)
+    }
   }
 
   return (
@@ -153,16 +165,17 @@ const SignUp = () => {
                 />
               </Grid>
             </Grid>
+            {/* Conditionally render loader */}
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              disabled={loading} // Disable button when loading
             >
-              Sign Up
+              {loading ? <CircularProgress size={24} /> : 'Sign Up'}
             </Button>
             <ToastContainer />
-
             <Grid container justifyContent="center">
               <Grid item justifyContent="flex-center">
                 <Link
