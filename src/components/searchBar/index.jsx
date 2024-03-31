@@ -1,7 +1,6 @@
-// SearchBar.js
-
 import React from 'react'
 import TextField from '@mui/material/TextField'
+import { Grid } from '@mui/material'
 
 const SearchBar = ({ searchBarHeight, setSearchBarHeight, handleSearch }) => {
   return (
@@ -16,12 +15,14 @@ const SearchBar = ({ searchBarHeight, setSearchBarHeight, handleSearch }) => {
         overflow: 'hidden',
       }}
     >
-      <TextField
-        label="Search by Full Name"
-        variant="outlined"
-        onChange={handleSearch}
-        fullWidth
-      />
+      <Grid xs={12} marginLeft={10}>
+        <TextField
+          label="Search by Full Name"
+          variant="outlined"
+          onChange={handleSearch}
+          fullWidth
+        />
+      </Grid>
     </div>
   )
 }
