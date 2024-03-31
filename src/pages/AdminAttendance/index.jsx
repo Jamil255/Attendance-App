@@ -12,7 +12,7 @@ const AdminAttendancePanel = () => {
             fontSize: '18px',
           }}
         >
-          Attendance Table
+          Attendance
         </h6>
         <PanelTable />
       </Box>
