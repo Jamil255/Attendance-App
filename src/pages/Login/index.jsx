@@ -14,28 +14,36 @@ import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { useNavigate } from 'react-router-dom'
 import { signInWithEmailAndPassword } from 'firebase/auth'
-import { InputAdornment } from '@mui/material'
+import { CircularProgress, InputAdornment } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify'
 import { auth, db } from '../../firebase'
 import ToastAlert from '../../utills/toast'
 import { doc, getDoc } from 'firebase/firestore'
+
 const defaultTheme = createTheme()
+
 const Login = () => {
   const navigate = useNavigate()
   const [showPassword, setPasswordShow] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false) // State to track loading status
+
   const handleClick = () => {
     navigate('/signup')
   }
+
   const handleSubmit = (event) => {
     event.preventDefault()
     if (!email || !password) {
       ToastAlert('Missing input field', 'warning')
       return
     }
+
+    // Set loading to true when submitting
+    setLoading(true)
 
     signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
@@ -53,6 +61,10 @@ const Login = () => {
         const errorCode = error.code
         const errorMessage = error.message
         ToastAlert(errorMessage, 'error')
+      })
+      .finally(() => {
+        // Set loading to false when request is complete
+        setLoading(false)
       })
   }
 
@@ -116,14 +128,17 @@ const Login = () => {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
+            {/* Conditionally render loader */}
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              disabled={loading} // Disable button when loading
             >
-              Sign In
+              {loading ? <CircularProgress size={24} /> : 'Sign In'}
             </Button>
+
             <ToastContainer />
           </Box>
         </Box>
@@ -131,4 +146,5 @@ const Login = () => {
     </ThemeProvider>
   )
 }
+
 export default Login
